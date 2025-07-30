@@ -25,7 +25,7 @@ function Header() {
         height: '40px',
       },
     },
-  }}/> :  <Link href='/sign-in'><Button className='cursor-pointer'>Get Started</Button></Link>}
+  }}/> :  <Link href='/sign-in'><Button className='cursor-pointer'>SignIn</Button></Link>}
       
         
     </div>

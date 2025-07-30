@@ -18,7 +18,7 @@ function Hero() {
 
           <div className="mt-4 flex justify-center gap-4 sm:mt-6">
             
-            <Link href='sign-in'><Button className='cursor-pointer rounded border border-indigo-600 bg-indigo-600 px-5 py-5 font-medium text-white shadow-sm transition-colors hover:bg-indigo-700'>Get Started</Button></Link>
+            <Link href='/dashboard'><Button className='cursor-pointer rounded border border-indigo-600 bg-indigo-600 px-5 py-5 font-medium text-white shadow-sm transition-colors hover:bg-indigo-700'>Get Started</Button></Link>
           </div>
         </div>
       </div>

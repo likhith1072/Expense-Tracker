@@ -88,7 +88,7 @@ function Dashboard() {
           <ExpensesListTable expensesList={expensesList} refreshData={() => { fetchExpenses() }} />
         </div>
         <div>
-          <h2 className='font-bold text-lg'>Latest Budgets</h2>
+          <h2 className='font-bold text-lg text-center'>Latest Budgets</h2>
           {budgetsList?.map((budget, index) => (
             <BudgetItem budget={budget} key={index} />
           ))}

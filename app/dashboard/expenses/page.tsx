@@ -33,7 +33,7 @@ function page() {
   }
   return (
     <div>
-        <h2 className='font-bold text-2xl p-2 text-center'>Your Latest Expenses</h2>
+        
        <ExpensesListTable expensesList={expensesList} refreshData={() => { fetchExpenses() }} />
     </div>
   )

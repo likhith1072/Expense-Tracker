@@ -29,7 +29,8 @@ function ExpensesListTable({ expensesList ,refreshData }: { expensesList: Expens
 
     }
   return (
-    <div>
+    <div className='border rounded-lg p-5 mt-5'>
+      <h2 className='font-bold text-xl p-2 text-center'>Your Latest Expenses</h2>
       {expensesList ?
       <table className="w-full table-fixed">
         <thead>
