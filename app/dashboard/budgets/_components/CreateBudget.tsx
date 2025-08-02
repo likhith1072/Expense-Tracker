@@ -15,6 +15,7 @@ import EmojiPicker from 'emoji-picker-react';
 import { Button } from '@/components/ui/button';
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
+import { useContextData } from '@/context/BudgetsAndExpensesContext';
 
 type Budget = {
   name: string,
@@ -23,7 +24,8 @@ type Budget = {
 }
 
 
-function CreateBudget({refreshData}: {refreshData() : void}) {
+function CreateBudget() {
+  const { globalBudgetsList, setGlobalBudgetsList } = useContextData();
 
   const [emojiIcon, setEmojiIcon] = useState<string>('😊');
   const [openEmojiPicker, setOpenEmojiPicker] = useState<boolean>(false);
@@ -53,7 +55,14 @@ function CreateBudget({refreshData}: {refreshData() : void}) {
       console.error('Failed to create budget');
       return;
     }
-    refreshData();
+
+    const newBudget = await res.json();
+    setGlobalBudgetsList((prev) => {
+  const updated = [...prev, newBudget];
+  updated.sort((a, b) => b.id - a.id); // Descending order by id
+  return updated;
+});
+    // refreshData();
     toast(" New Budget has been created."
     //   ,{
     //   style: {
@@ -71,7 +80,7 @@ function CreateBudget({refreshData}: {refreshData() : void}) {
     <div>
 
       <Dialog>
-        <DialogTrigger asChild><div className='bg-slate-100 p-10 rounded-md h-[160px] items-center flex flex-col border-2 border-dashed cursor-pointer hover:shadow-md'>
+        <DialogTrigger asChild><div className='bg-slate-100 p-10 rounded-md h-[160px] items-center flex flex-col border-2 border-dashed cursor-pointer hover:shadow-md mt-3'>
           <h2 className='text-3xl'>+</h2>
           <h2 className='text-lg'>Create New Budget</h2>
         </div></DialogTrigger>

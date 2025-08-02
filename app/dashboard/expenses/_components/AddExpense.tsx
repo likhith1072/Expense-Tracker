@@ -3,7 +3,9 @@ import React from 'react'
 import { Input } from "@/components/ui/input"
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import {Loader} from 'lucide-react'
+import { Loader } from 'lucide-react'
+import { useContextData } from '@/context/BudgetsAndExpensesContext';
+
 
 type Expense
     = {
@@ -11,7 +13,8 @@ type Expense
         amount: number,
         budgetId: number
     }
-function AddExpense({id,refreshData} : { id: string , refreshData():void}) {
+function AddExpense({ id }: { id: string}) {
+    const { globalBudgetsList, setGlobalBudgetsList, globalExpensesList, setGlobalExpensesList } = useContextData();
     const [name, setName] = useState<string>('');
     const [amount, setAmount] = useState<number | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
@@ -20,7 +23,7 @@ function AddExpense({id,refreshData} : { id: string , refreshData():void}) {
         name,
         amount: amount || 0, // Ensure amount is a number, default to 0 if null
         budgetId: Number(id)
-    };  
+    };
 
     const addNewExpense = async () => {
         setLoading(true);
@@ -36,13 +39,32 @@ function AddExpense({id,refreshData} : { id: string , refreshData():void}) {
             setLoading(false);
             throw new Error('Failed to add expense');
         }
+
+        const NewExpense = await res.json();
+
+        setGlobalExpensesList((prev) => {
+            const updated = [...prev, NewExpense];
+            updated.sort((a, b) =>  new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+            return updated;
+        });
+
+        setGlobalBudgetsList((prev) => {
+            const index = prev.findIndex(b => b.id === NewExpense.budgetId);
+            
+            const updated = [...prev]; // safe copy
+            const budget= { ...updated[index] }; // Copy the object
+            budget.totalSpent = (budget.totalSpent || 0) + NewExpense.amount;
+            budget.totalItem = (budget.totalItem || 0) + 1;
+            updated[index] = budget; // Replace with updated copy
+            return updated;
+        });
         setName('');
         setAmount(null);
-        refreshData();
-        const data = await res.json();
-        console.log(data);
+        // refreshData();
         setLoading(false);
     }
+
+
 
     return (
         <div className='border p-5 rounded-lg'>
@@ -58,14 +80,14 @@ function AddExpense({id,refreshData} : { id: string , refreshData():void}) {
                     value={amount !== null ? amount : ''} placeholder='e.g. 1000'
                     className='mt-1' onChange={(e) => setAmount(Number(e.target.value))} />
             </div>
-            <Button disabled={!(name && amount)|| loading}
+            <Button disabled={!(name && amount) || loading}
                 onClick={() => { addNewExpense() }} className='mt-5 w-full cursor-pointer'>
-                    {loading?<Loader className='animate-spin'/>:"Add Expense"}</Button>
+                {loading ? <Loader className='animate-spin' /> : "Add Expense"}</Button>
 
 
 
         </div>
     )
-}   
+}
 
 export default AddExpense

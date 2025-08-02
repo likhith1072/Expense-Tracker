@@ -22,12 +22,12 @@ export async function PUT(request: Request) {
             name,
             amount,
             icon: emoji,
-        }).where(eq(Budgets.id, budgetId)).returning({ updatedId: Budgets.id });
+        }).where(eq(Budgets.id, budgetId)).returning();
         if (result.length === 0) {
             return NextResponse.json({ error: "Budget not found" }, { status: 404 });
         }
 
-        return NextResponse.json({ message: "Updated", success: true, id: result[0].updatedId });
+        return NextResponse.json(result[0]);
 
     } catch (error) {
         console.error(error);

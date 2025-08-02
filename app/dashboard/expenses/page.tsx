@@ -2,26 +2,24 @@
 import React, { useEffect, useState } from 'react'
 import { useUser } from '@clerk/nextjs';
 import ExpensesListTable from './_components/ExpensesListTable';
+import { useContextData } from '@/context/BudgetsAndExpensesContext';
 
 type ExpensesList = {
   id: number,
   name: string,
   amount: number,
   createdAt: string,
+  budgetId: number
 }
 
-function page() {
+function Expenses() {
+  const { globalBudgetsList, setGlobalBudgetsList, globalExpensesList, setGlobalExpensesList } = useContextData();
 
-    const { user } = useUser();
-    const [expensesList, setExpensesList] = useState<ExpensesList[] | null>(null);
+  const { user } = useUser();
+  const [expensesList, setExpensesList] = useState<ExpensesList[] | null>(null);
 
-     useEffect(() => {
-         // Fetch expenses from API
-         user && fetchExpenses();
 
-       }, [user]);
-
-    const fetchExpenses = async () => {
+  const fetchExpenses = async () => {
     try {
       const response = await fetch(`/api/expenseslist`);
       const data = await response.json();
@@ -33,10 +31,10 @@ function page() {
   }
   return (
     <div>
-        
-       <ExpensesListTable expensesList={expensesList} refreshData={() => { fetchExpenses() }} />
+
+      <ExpensesListTable expensesList={globalExpensesList} refreshData={() => { fetchExpenses() }} />
     </div>
   )
 }
 
-export default page
+export default Expenses;

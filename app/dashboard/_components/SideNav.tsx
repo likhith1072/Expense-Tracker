@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import Image from 'next/image'
-import {LayoutGrid,PiggyBank,ReceiptText,ShieldCheck} from 'lucide-react'
+import {LayoutGrid,RotateCcw,PiggyBank,ReceiptText,ShieldCheck} from 'lucide-react'
 import { UserButton } from '@clerk/nextjs';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
@@ -40,9 +40,9 @@ function SideNav() {
         },
     {
         id:4,
-        name:'Upgrade',
-        icon:ShieldCheck,
-        path:'/dashboard/upgrade'
+        name:'Reset Data',
+        icon:RotateCcw,
+        path:'/dashboard/reset_all_budgets'
     }]
     return (
         <div className='h-screen pl-3 pr-3 shadow-md border-r border-black/30'>

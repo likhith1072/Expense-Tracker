@@ -11,6 +11,7 @@ import { toast } from 'sonner'
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog"
 import {useRouter} from 'next/navigation';
 import EditBudget from '../_components/EditBudget';
+import { useContextData } from '@/context/BudgetsAndExpensesContext';
 
 type BudgetInfo = {
   id: number,
@@ -26,8 +27,8 @@ type ExpensesList = {
   id: number,
   name: string,
   amount: number,
-  budgetId: number,
-  createdAt: string
+  createdAt: string,
+  budgetId: number
 }
 
 function Expenses({ params }: { params: Promise<{ id: string }> }) {
@@ -37,12 +38,17 @@ function Expenses({ params }: { params: Promise<{ id: string }> }) {
   const [expensesList, setExpensesList] = useState<ExpensesList[]|null>(null);
   const router=useRouter();
 
+  const { globalBudgetsList, setGlobalBudgetsList, globalExpensesList, setGlobalExpensesList } = useContextData();
+
+
   useEffect(() => {
-
-    user && getBudgetInfo();
-    user && getExpensesList();
-
-  }, [user])
+    if (user) {
+      const budget = globalBudgetsList.find(b => b.id === Number(id));
+      setBudgetInfo(budget || null);
+      const expenses = globalExpensesList.filter(e => e.budgetId === Number(id));
+      setExpensesList(expenses || null);
+    }
+  }, [user, globalBudgetsList, globalExpensesList, id]);
 
   const getBudgetInfo = async () => {
     try {
@@ -105,6 +111,7 @@ function Expenses({ params }: { params: Promise<{ id: string }> }) {
         if (!response.ok) {
           throw new Error('Failed to delete budget');
         }
+        setGlobalBudgetsList((prev) => prev.filter(b => b.id !== budgetInfo.id));
         return response.json();
       })
       .then(() => {
@@ -124,9 +131,8 @@ function Expenses({ params }: { params: Promise<{ id: string }> }) {
       <div className='flex items-center justify-between'><h2 className="text-2xl font-bold flex gap-2 items-center">
         <ArrowLeft onClick={()=>router.back()} className='cursor-pointer text-gray-700 hover:text-gray-900'/> My Expenses</h2>
         <div className='flex gap-2 items-center'>
-          <EditBudget budgetInfo={budgetInfo} refreshData={() => {
-            getBudgetInfo();
-          }} />
+          <EditBudget budgetInfo={budgetInfo} 
+          />
         <Dialog>
           <DialogTrigger asChild><Button className='bg-red-600 hover:bg-red-700 cursor-pointer'><Trash className='w-6 h-6 text-white' />Delete</Button>
           </DialogTrigger>
@@ -159,10 +165,7 @@ function Expenses({ params }: { params: Promise<{ id: string }> }) {
 
       <div className='grid grid-cols-1 md:grid-cols-2 mt-5 gap-5'>
         {budgetInfo ? <BudgetItem budget={budgetInfo} /> : <div className='w-full bg-slate-200 rounded-lg h-[140px] animate-pulse'></div>}
-        <AddExpense id={id} refreshData={() => {
-          getBudgetInfo();
-          getExpensesList();
-        }} />
+        <AddExpense id={id} />
       </div>
       <div className='mt-4 '>
         <h2 className='font-bold text-lg'>Latest Expenses</h2>

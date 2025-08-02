@@ -5,8 +5,11 @@ import { desc, eq, sql } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
 import { getTableColumns } from 'drizzle-orm';
 
-export async function GET() {
+export async function GET(req:Request) {
   const user = await currentUser();
+  // const {searchParams}=new URL(req.url);
+  //  const limit = Number(searchParams.get('limit')) || 6;
+  // const offset = Number(searchParams.get('offset')) || 0;
 
   if (!user) {
     return NextResponse.json({ error: 'User not authenticated' }, { status: 401 });

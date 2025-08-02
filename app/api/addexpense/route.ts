@@ -3,7 +3,7 @@ import { db } from '@/src/index';
 import { Budgets,Expenses } from '@/src/db/schema';
 import { NextResponse } from 'next/server';
 import { currentUser } from '@clerk/nextjs/server';
-import moment from 'moment';
+
 
 export async function POST(request: Request) {
   try {
@@ -20,13 +20,13 @@ export async function POST(request: Request) {
         name,
         amount,
         budgetId,
-        createdAt: moment().format('DD/MM/YYYY'),
-    }).returning({insertedId: Expenses.id});
+        createdAt: new Date().toISOString(),
+    }).returning();
     if (!result) {
       return NextResponse.json({ error: 'Failed to create budget' }, { status: 500 });
     }
 
-    return NextResponse.json({ success: true, data: result });
+    return NextResponse.json(result[0]);
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

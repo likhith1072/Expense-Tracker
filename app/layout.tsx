@@ -5,6 +5,8 @@ import {
   ClerkProvider
 } from '@clerk/nextjs'
 import { Toaster } from "@/components/ui/sonner"
+import ClientContextProvider from "@/context/ClientContextProvider";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,7 +26,7 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   title: "Expense Tracker",
   description: "Track your expenses efficiently",
-    icons: {
+  icons: {
     icon: '/cash-money-business-growth-saving-currency-profit-svgrepo-com.svg',
   },
 };
@@ -34,6 +36,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+ 
   return (
     <ClerkProvider>
 
@@ -41,8 +45,8 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} ${outfit.variable} antialiased`}
         >
-           <Toaster  />
-          {children}
+          <Toaster />
+          <ClientContextProvider>{children}</ClientContextProvider>
         </body>
       </html>
     </ClerkProvider>

@@ -4,42 +4,72 @@ import SideNav from './_components/SideNav'
 import DashboardHeader from './_components/DashboardHeader';
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
-
+import { useContextData } from '@/context/BudgetsAndExpensesContext';
 
 
 type DashboardLayoutProps = {
     children: React.ReactNode;
 };
 
-type Budgets ={
-    id:number,
-    name:string,
-    amount:number,
-    icon?:string|null,
-    createdBy:string
-}
-
 
 function DashboardLayout({ children }: DashboardLayoutProps) {
-    // const [budgets, setBudgets] = useState<Budgets[]>([]);
 
-const {user}=useUser();
-// const router=useRouter();
+    const router=useRouter();
+   
+  
+ const { globalBudgetsList, setGlobalBudgetsList, globalExpensesList, setGlobalExpensesList } = useContextData();
+    const { user } = useUser();
+ 
+     useEffect(() => {
+    // Fetch budgets from API
+    user && fetchBudgets();
 
-// useEffect(()=>{
-//     if (!user) return;
-//      fetch('/api/budgets')
-//     .then(res => res.json())
-//     .then((data) => {
-//       setBudgets(data);
-//       console.log(data);
-//       if(data?.length==0)
-//       {
-//         router.replace('/dashboard/budgets');
-//       }
-//     });
+  }, [user]);
 
-// },[user])
+
+ 
+
+      const fetchBudgets = async () => {
+
+    try {
+      const response = await fetch(`/api/budgetslist`,{
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        console.log(response.ok);
+      const text = await response.text(); // 👈 Check server response
+      console.error('Failed to fetch budgets:', response.status, text);
+      return;
+    }
+
+    const data = await response.json();
+
+    if (data?.length === 0) {
+      router.replace('/dashboard/budgets');
+      return;
+    }
+
+    // setBudgetsList(data);
+    setGlobalBudgetsList(data); // Update global state
+    fetchExpenses();
+    } catch (error) {
+      console.error('Error fetching budgets:', error);
+    }
+  };
+
+  const fetchExpenses = async () => {
+    try {
+      const response = await fetch(`/api/expenseslist`);
+      const data = await response.json();
+    //   setExpensesList(data);
+      setGlobalExpensesList(data); // Update global state
+      console.log(data);
+    } catch (error) {
+      console.error('Error fetching expenses:', error);
+    }
+  }
+
 
     return (
         <div className='grid grid-cols-4 lg:grid-cols-5'>
@@ -47,7 +77,9 @@ const {user}=useUser();
                 <SideNav />
             </div>
             <div className=' md:col-span-3 col-span-4 lg:col-span-4 '>
-               <DashboardHeader />
+                <DashboardHeader />
+
+             
                 {children}
             </div>
         </div>

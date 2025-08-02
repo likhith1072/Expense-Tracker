@@ -16,6 +16,7 @@ import EmojiPicker from 'emoji-picker-react';
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
 import { useState } from 'react';
+import { useContextData } from '@/context/BudgetsAndExpensesContext';
 
 
 
@@ -37,7 +38,9 @@ type Budget = {
   emoji: string
 }
 
-function EditBudget({ budgetInfo,refreshData }: { budgetInfo: BudgetInfo | null, refreshData():void }) {
+function EditBudget({ budgetInfo }: { budgetInfo: BudgetInfo | null}) {
+
+  const { globalBudgetsList, setGlobalBudgetsList } = useContextData();
 
     useEffect(() => {
   if (budgetInfo) {
@@ -77,7 +80,14 @@ function EditBudget({ budgetInfo,refreshData }: { budgetInfo: BudgetInfo | null,
           console.error('Failed to update budget');
           return;
         }
-        refreshData();
+        const updatedBudget = await res.json();
+        setGlobalBudgetsList((prev) => {
+          const index = prev.findIndex(b => b.id === updatedBudget.id);
+          if (index === -1) return [...prev, updatedBudget];
+          const updated = [...prev];
+          updated[index] = updatedBudget;
+          return updated;
+        });
         toast(" Budget has been updated."
         //   ,{
         //   style: {

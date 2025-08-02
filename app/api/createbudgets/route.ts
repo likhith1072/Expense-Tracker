@@ -21,12 +21,19 @@ export async function POST(request: Request) {
         amount,
         createdBy: email,
         icon: emoji,
-    }).returning({insertedId: Budgets.id});
+    }).returning();
+
+     const newBudget = {
+      ...result[0],
+      totalSpent: 0,
+      totalItem: 0,
+    };
+
     if (!result) {
       return NextResponse.json({ error: 'Failed to create budget' }, { status: 500 });
     }
 
-    return NextResponse.json({ success: true, data: result });
+    return NextResponse.json(newBudget);
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
