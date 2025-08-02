@@ -164,7 +164,7 @@ function Expenses({ params }: { params: Promise<{ id: string }> }) {
       </div>
 
       <div className='grid grid-cols-1 md:grid-cols-2 mt-5 gap-5'>
-        {budgetInfo ? <BudgetItem budget={budgetInfo} /> : <div className='w-full bg-slate-200 rounded-lg h-[140px] animate-pulse'></div>}
+        {budgetInfo ?<div className='h-[200px] '> <BudgetItem budget={budgetInfo} /> </div> : <div className='w-full bg-slate-200 rounded-lg h-[140px] animate-pulse'></div>}
         <AddExpense id={id} />
       </div>
       <div className='mt-4 '>
