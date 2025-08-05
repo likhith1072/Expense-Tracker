@@ -97,7 +97,7 @@ function Dashboard() {
   return (
     <div className='p-8 '>
       <h2 className='font-bold text-3xl'>Hi, {user?.fullName}</h2>
-      <p className='text-gray-500'>Here's what happening with your money, Lets Manage your expense </p>
+      <p className='text-gray-500'>Here is what happening with your money, Lets Manage your expense </p>
       <Cardinfo budgetsList={globalBudgetsList} />
 
       <div className='grid grid-col-1 lg:grid-cols-3 gap-5 mt-5'>

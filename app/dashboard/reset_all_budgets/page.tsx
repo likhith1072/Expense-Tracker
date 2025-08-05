@@ -3,7 +3,6 @@ import React from 'react'
 import { toast } from 'sonner'
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog"
 import { Button } from '@/components/ui/button';
-import { Trash } from 'lucide-react';
 import {RotateCcw} from 'lucide-react'
 import { useRouter } from 'next/navigation';
 import { useContextData } from '@/context/BudgetsAndExpensesContext';
@@ -42,7 +41,7 @@ function ResetAllBudgets() {
     <div>
       <h1 className='text-2xl font-bold text-center p-4'>Reset All Budgets</h1>
       <p className='text-center font-semibold p-2'>EveryOne sets there Budgets for a specific period of time, Some for Montly and Some for Yearly.</p>
-      <p className='text-center font-semibold p-2'> Reset all budgets means to set all the Budgets amount to "0" and Deleting all Expenses ,Your Budgets name, icon will not be removed when you Reset Budgets</p>
+      <p className='text-center font-semibold p-2'> Reset all budgets means to set all the Budgets amount to &quot;0&quot; and Deleting all Expenses ,Your Budgets name, icon will not be removed when you Reset Budgets</p>
       <div className='flex justify-center mt-5'>
        
           <Dialog>
@@ -52,7 +51,7 @@ function ResetAllBudgets() {
                     <DialogHeader>
                       <DialogTitle className='text-center text-xl'>Are you sure, you want to Reset All Budgets?</DialogTitle>
                       <DialogDescription className='text-center text-md'>
-                        This action cannot be undone. This will permanently delete All Expenses and reset All your budgets amount to "0"
+                        This action cannot be undone. This will permanently delete All Expenses and reset All your budgets amount to &quot;0&quot;
                         (This will not reset your Budget name and icon).
                       </DialogDescription>
         
