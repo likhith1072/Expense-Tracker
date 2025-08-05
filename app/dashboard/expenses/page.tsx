@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import { useUser } from '@clerk/nextjs';
 import ExpensesListTable from './_components/ExpensesListTable';
 import { useContextData } from '@/context/BudgetsAndExpensesContext';

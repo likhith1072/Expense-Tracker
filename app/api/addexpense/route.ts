@@ -1,6 +1,6 @@
 // app/api/budgets/route.ts
 import { db } from '@/src/index';
-import { Budgets,Expenses } from '@/src/db/schema';
+import { Expenses } from '@/src/db/schema';
 import { NextResponse } from 'next/server';
 import { currentUser } from '@clerk/nextjs/server';
 

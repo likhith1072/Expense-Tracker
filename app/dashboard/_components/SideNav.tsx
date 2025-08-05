@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import Image from 'next/image'
-import {LayoutGrid,RotateCcw,PiggyBank,ReceiptText,ShieldCheck} from 'lucide-react'
+import {LayoutGrid,RotateCcw,PiggyBank,ReceiptText} from 'lucide-react'
 import { UserButton } from '@clerk/nextjs';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';

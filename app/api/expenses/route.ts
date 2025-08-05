@@ -1,7 +1,6 @@
 import { Expenses } from "@/src/db/schema";
 import { db } from "@/src/index";
 import { NextResponse } from "next/server";
-import { currentUser } from "@clerk/nextjs/server";
 import { desc, eq } from "drizzle-orm";
 
 

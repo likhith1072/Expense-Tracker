@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { UserButton, useUser } from "@clerk/nextjs";
+import {  useUser } from "@clerk/nextjs";
 import Cardinfo from './_components/Cardinfo';
 import BarChartDashboard from './_components/BarChartDashboard';
 import BudgetItem from './budgets/_components/BudgetItem';
@@ -8,7 +8,6 @@ import ExpensesListTable from './expenses/_components/ExpensesListTable';
 import { useRouter } from 'next/navigation';
 import { useContextData } from '@/context/BudgetsAndExpensesContext';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 
 type BudgetsList =                 {
